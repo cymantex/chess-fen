@@ -1,11 +1,12 @@
 {
   "name": "chess-fen",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "author": "Simon Eriksson <smnrkssn@hotmail.se>",
   "license": "MIT",
   "description": "",
   "main": "./main.js",
+  "module": "./main.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dv16sen/chess-fen"
