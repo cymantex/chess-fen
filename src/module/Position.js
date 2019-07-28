@@ -94,6 +94,22 @@ export class Position {
     isEqualTo = (position) => {
         return this.x === position.x && this.y === position.y;
     };
+
+    isNorthTo = (position) => {
+        return this.y > position.y;
+    };
+
+    isSouthTo = (position) => {
+        return this.y < position.y;
+    };
+
+    isWestTo = (position) => {
+        return this.x > position.x;
+    };
+
+    isEastTo = (position) => {
+        return this.x < position.x;
+    };
 }
 
 export default Position;
