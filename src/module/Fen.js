@@ -41,7 +41,7 @@ export class Fen {
         return row ? row : outsideBoard;
     }
 
-    makeMove(fromPositionOrCoordinate, toPositionOrCoordinate){
+    makeMove(fromPositionOrCoordinate, toPositionOrCoordinate, updateGameData = true){
         const fromPosition = Position.fromPositionOrCoordinate(fromPositionOrCoordinate);
         const toPosition = Position.fromPositionOrCoordinate(toPositionOrCoordinate);
         const piece = this.getPiecePlacement(fromPosition);
@@ -59,15 +59,18 @@ export class Fen {
         const mapToPositionX = (placement, x) => (x === toPosition.x) ? piece : placement;
         const mapFromPositionX = (placement, x) => (x === fromPosition.x) ? emptySquare : placement;
 
-        this.castlingRights = this._getCastlingRightsAfterMove(fromPosition);
-        this.enPassantSquare = this._getEnPassantSquare({fromPosition, toPosition});
-        this.toMove = piece.startsWith(colors.black) ? colors.white : colors.black;
-        this.halfMoves = (target === emptySquare && !piece.includes(pieces.pawn))
-            ? this.halfMoves + 1
-            : 0;
-        this.fullMoves = piece.startsWith(colors.black)
-            ? this.fullMoves + 1
-            : this.fullMoves;
+        if(updateGameData){
+            this.castlingRights = this._getCastlingRightsAfterMove(fromPosition);
+            this.enPassantSquare = this._getEnPassantSquare({fromPosition, toPosition});
+            this.toMove = piece.startsWith(colors.black) ? colors.white : colors.black;
+            this.halfMoves = (target === emptySquare && !piece.includes(pieces.pawn))
+                ? this.halfMoves + 1
+                : 0;
+            this.fullMoves = piece.startsWith(colors.black)
+                ? this.fullMoves + 1
+                : this.fullMoves;
+        }
+
         this.piecePlacement = this.piecePlacement
             .map((row, y) => {
                 if(y === fromPosition.y && y === toPosition.y){
