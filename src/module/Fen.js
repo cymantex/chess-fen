@@ -27,6 +27,14 @@ export class Fen {
         ].join(" ");
     }
 
+    isOccupiedPlacement({x, y}){
+        return !this.isEmptyPlacement({x, y});
+    }
+
+    isEmptyPlacement({x, y}){
+        return this.getPiecePlacement({x, y}) === emptySquare;
+    }
+
     getPiecePlacement({x, y}){
         const column = this.piecePlacement[y];
         const row = column ? column[x] : null;
