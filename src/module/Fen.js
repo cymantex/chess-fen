@@ -227,3 +227,4 @@ export class Fen {
         }
     };
 }
+export default Fen;

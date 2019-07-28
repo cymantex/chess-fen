@@ -1,6 +1,6 @@
 {
   "name": "chess-fen",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": false,
   "author": "Simon Eriksson <smnrkssn@hotmail.se>",
   "license": "MIT",
@@ -22,6 +22,7 @@
     "babel-plugin-add-module-exports": "^1.0.2",
     "babel-plugin-react-css-modules": "^5.2.6",
     "cross-env": "^5.2.0",
+    "lodash": "^4.17.15",
     "node-sass": "^4.12.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",

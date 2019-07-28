@@ -41,21 +41,59 @@ export class Position {
         return this;
     };
 
-    isDiagonalTo = (position) => {
+    isKnightMoveTo = (position) => {
+        return !this.isDiagonalTo(position) &&
+            !this.isVerticalTo(position) &&
+            !this.isHorizontalTo(position) &&
+            this.isWithinRange(position, 2);
+    };
+
+    isWithinRange = (position, range = 1) => {
         const deltaY = Math.abs(position.y - this.y);
         const deltaX = Math.abs(position.x - this.x);
-        return deltaY === deltaX;
+        return deltaX <= range && deltaY <= range;
     };
 
-    isVerticalTo = (position) => {
-        return this.x === position.x;
+    isAdjacentTo = (position, range = 1) => {
+        for(let x = 0; x < Position.columns; x++){
+            for(let y = 0; y < Position.columns; y++){
+                const thePosition = new Position(x, y);
+                const xIsInRange = x <= this.x + range && x >= this.x - range;
+                const yIsInRange = y <= this.y + range && y >= this.y - range;
+
+                if(
+                    xIsInRange &&
+                    yIsInRange &&
+                    thePosition.isEqualTo(position) &&
+                    !thePosition.isEqualTo(this)
+                ){
+                    return true;
+                }
+            }
+        }
+
+        return false;
     };
 
-    isHorizontalTo = (position) => {
-        return this.y === position.y;
+    isDiagonalTo = (position, maxSpaces = Infinity) => {
+        const deltaY = Math.abs(position.y - this.y);
+        const deltaX = Math.abs(position.x - this.x);
+        return deltaY === deltaX && deltaX <= maxSpaces;
+    };
+
+    isVerticalTo = (position, maxSpaces = Infinity) => {
+        const deltaY = Math.abs(position.y - this.y);
+        return this.x === position.x && deltaY <= maxSpaces;
+    };
+
+    isHorizontalTo = (position, maxSpaces = Infinity) => {
+        const deltaX = Math.abs(position.x - this.x);
+        return this.y === position.y && deltaX <= maxSpaces;
     };
 
     isEqualTo = (position) => {
         return this.x === position.x && this.y === position.y;
     };
 }
+
+export default Position;
