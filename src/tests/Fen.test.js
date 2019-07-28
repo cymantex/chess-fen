@@ -1,4 +1,5 @@
 import {Fen} from "../module/Fen";
+import {whitePieces} from "../module/FenConstants";
 
 let fen = null;
 
@@ -53,4 +54,14 @@ it("Does not allow invalid move", () => {
     expect(fen.makeMove("e3", "e4").toString()).toBe(Fen.startingPosition);
     expect(fen.makeMove("e3", "e3").toString()).toBe(Fen.startingPosition);
     expect(fen.makeMove("e7", "e5").toString()).toBe(Fen.startingPosition);
+});
+
+it("Should update position", () => {
+    expect(fen.updatePosition("e1", whitePieces.bishop).toString())
+        .toBe("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQBBNR w KQkq - 0 1")
+});
+
+it("Should clear position", () => {
+    expect(fen.clearPosition("e1").toString())
+        .toBe("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQ1BNR w KQkq - 0 1");
 });

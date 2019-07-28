@@ -41,6 +41,27 @@ export class Fen {
         return row ? row : outsideBoard;
     }
 
+    updatePosition(positionOrCoordinate, updatedPlacement){
+        const position = Position.fromPositionOrCoordinate(positionOrCoordinate);
+
+        this.piecePlacement = this.piecePlacement
+            .map((row, y) => {
+                if(y === position.y){
+                    return row.map((placement, x) => (x === position.x) ? updatedPlacement : placement);
+                }
+
+                return (y === position.y)
+                    ? row.map((placement, x) => (x === position.x) ? updatedPlacement : placement)
+                    : row;
+            });
+
+        return this;
+    }
+
+    clearPosition(positionOrCoordinate){
+        return this.updatePosition(positionOrCoordinate, emptySquare);
+    }
+
     makeMove(fromPositionOrCoordinate, toPositionOrCoordinate, updateGameData = true){
         const fromPosition = Position.fromPositionOrCoordinate(fromPositionOrCoordinate);
         const toPosition = Position.fromPositionOrCoordinate(toPositionOrCoordinate);
