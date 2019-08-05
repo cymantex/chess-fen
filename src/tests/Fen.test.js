@@ -49,13 +49,6 @@ it("Properly updates castling rights", () => {
         .toBe("rnbq1bnr/pppppppp/4k3/8/8/4K3/PPPPPPPP/RNBQ1BNR w - - 2 2")
 });
 
-it("Does not allow invalid move", () => {
-    expect(fen.makeMove("h1", "h9").toString()).toBe(Fen.startingPosition);
-    expect(fen.makeMove("e3", "e4").toString()).toBe(Fen.startingPosition);
-    expect(fen.makeMove("e3", "e3").toString()).toBe(Fen.startingPosition);
-    expect(fen.makeMove("e7", "e5").toString()).toBe(Fen.startingPosition);
-});
-
 it("Should update position", () => {
     expect(fen.updatePosition("e1", whitePieces.bishop).toString())
         .toBe("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQBBNR w KQkq - 0 1")

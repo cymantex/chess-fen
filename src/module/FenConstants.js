@@ -5,6 +5,10 @@ const mapObject = (object, mappingFunction) => {
         .reduce((objects, object) => ({...objects, ...object}));
 };
 
+export const sides = {
+    queenside: "queenside",
+    kingside: "kingside"
+};
 export const pieces = {
     pawn: "Pawn",
     rook: "Rook",

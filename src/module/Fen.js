@@ -1,9 +1,18 @@
 import {InvalidFenError} from "./InvalidFenError";
 import {Position} from "./Position";
-import {colors, emptySquare, fenToPiece, outsideBoard, pieces, pieceToFen} from "./FenConstants";
+import {
+    colors,
+    emptySquare,
+    fenToPiece,
+    outsideBoard,
+    pieces,
+    pieceToFen,
+    sides
+} from "./FenConstants";
 
 export class Fen {
     static startingPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    static emptyPosition = "8/8/8/8/8/8/8/8 w KQkq - 0 1";
 
     constructor(fen) {
         this.fen = fen;
@@ -58,7 +67,7 @@ export class Fen {
         return this;
     }
 
-    clearPosition(positionOrCoordinate){
+    clearPosition(positionOrCoordinate = null){
         return this.updatePosition(positionOrCoordinate, emptySquare);
     }
 
@@ -67,15 +76,6 @@ export class Fen {
         const toPosition = Position.fromPositionOrCoordinate(toPositionOrCoordinate);
         const piece = this.getPiecePlacement(fromPosition);
         const target = this.getPiecePlacement(toPosition);
-
-        if(
-            target === outsideBoard ||
-            piece === emptySquare ||
-            fromPosition.isEqualTo(toPosition) ||
-            !piece.includes(this.toMove)
-        ){
-            return this;
-        }
 
         const mapToPositionX = (placement, x) => (x === toPosition.x) ? piece : placement;
         const mapFromPositionX = (placement, x) => (x === fromPosition.x) ? emptySquare : placement;
@@ -195,13 +195,13 @@ export class Fen {
     };
 
     _parseCastlingRights = () => ({
-        white: {
-            queenside: this.fenTokens[2].includes("Q"),
-            kingside: this.fenTokens[2].includes("K")
+        [colors.white.toLowerCase()]: {
+            [sides.queenside.toLowerCase()]: this.fenTokens[2].includes("Q"),
+            [sides.kingside.toLowerCase()]: this.fenTokens[2].includes("K")
         },
-        black: {
-            queenside: this.fenTokens[2].includes("q"),
-            kingside: this.fenTokens[2].includes("k")
+        [colors.black.toLowerCase()]: {
+            [sides.queenside]: this.fenTokens[2].includes("q"),
+            [sides.kingside]: this.fenTokens[2].includes("k")
         }
     });
 
