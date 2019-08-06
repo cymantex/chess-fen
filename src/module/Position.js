@@ -25,6 +25,14 @@ export class Position {
             : Position.from(positionOrCoordinate);
     }
 
+    rotate = (rotate = true) => {
+        return rotate ? new Position(-this.x, -this.y) : this;
+    };
+
+    toString = () => {
+        return this.toCoordinate();
+    };
+
     toCoordinate = () => {
         return String.fromCharCode(this.x + 97) + Math.abs(this.y - Position.columns);
     };

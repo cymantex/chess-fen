@@ -1,6 +1,7 @@
 import {isObstructedPath as isObstructedPath0} from "./utils.js";
 import {Position as Position1} from "./Position.js";
 import {InvalidFenError as InvalidFenError2} from "./InvalidFenError.js";
+import {sides as sides3} from "./FenConstants.js";
 import {pieces as pieces3} from "./FenConstants.js";
 import {colors as colors3} from "./FenConstants.js";
 import {emptySquare as emptySquare3} from "./FenConstants.js";
@@ -14,6 +15,7 @@ import {Fen as Fen4} from "./Fen.js";
 export const isObstructedPath = isObstructedPath0;
 export const Position = Position1;
 export const InvalidFenError = InvalidFenError2;
+export const sides = sides3;
 export const pieces = pieces3;
 export const colors = colors3;
 export const emptySquare = emptySquare3;
