@@ -103,19 +103,35 @@ export class Position {
         return this.x === position.x && this.y === position.y;
     };
 
-    isNorthTo = (position) => {
+    isNorthTo = (position, range = null) => {
+        if(range){
+            return this.y === position.y + range;
+        }
+
         return this.y > position.y;
     };
 
-    isSouthTo = (position) => {
+    isSouthTo = (position, range = null) => {
+        if(range){
+            return this.y === position.y - range;
+        }
+
         return this.y < position.y;
     };
 
-    isWestTo = (position) => {
+    isWestTo = (position, range = null) => {
+        if(range){
+            return this.x === position.x + range;
+        }
+
         return this.x > position.x;
     };
 
-    isEastTo = (position) => {
+    isEastTo = (position, range = null) => {
+        if(range){
+            return this.x === position.x - range;
+        }
+
         return this.x < position.x;
     };
 }

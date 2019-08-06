@@ -38,6 +38,28 @@ it("Increases position", () => {
     expect(board.e7.increaseBy(new Position(2, 2)).toCoordinate()).toBe("g5")
 });
 
+it("Detects if position is in direction", () => {
+    expect(board.h1.isWestTo(board.a1)).toBeTruthy();
+    expect(board.a1.isWestTo(board.h1)).toBeFalsy();
+    expect(board.h1.isWestTo(board.f1, 2)).toBeTruthy();
+    expect(board.h1.isWestTo(board.f1, 3)).toBeFalsy();
+
+    expect(board.h1.isNorthTo(board.h8)).toBeTruthy();
+    expect(board.h8.isNorthTo(board.h1)).toBeFalsy();
+    expect(board.h1.isNorthTo(board.h3, 2)).toBeTruthy();
+    expect(board.h1.isNorthTo(board.h3, 3)).toBeFalsy();
+
+    expect(board.a1.isEastTo(board.h1)).toBeTruthy();
+    expect(board.h1.isEastTo(board.a1)).toBeFalsy();
+    expect(board.a1.isEastTo(board.c1, 2)).toBeTruthy();
+    expect(board.a1.isEastTo(board.c1, 3)).toBeFalsy();
+
+    expect(board.h8.isSouthTo(board.h1)).toBeTruthy();
+    expect(board.h1.isSouthTo(board.h8)).toBeFalsy();
+    expect(board.h8.isSouthTo(board.h6, 2)).toBeTruthy();
+    expect(board.h8.isSouthTo(board.h6, 3)).toBeFalsy();
+});
+
 it("Detects if diagonal to another position or not", () => {
     expect(board.a8.isDiagonalTo(board.h1)).toBeTruthy();
     expect(board.h1.isDiagonalTo(board.a8)).toBeTruthy();
@@ -98,7 +120,7 @@ it("Detects if knight move or not", () => {
     expect(board.e3.isKnightMoveTo(board.b4)).toBeFalsy();
 });
 
-it("Adjust position to tileSize", () => {
+it("Adjusts position to tileSize", () => {
     expect(new Position(100, 100).toGridPosition(100).toCoordinate()).toBe("b7")
 });
 
