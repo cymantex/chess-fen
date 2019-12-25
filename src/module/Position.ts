@@ -3,7 +3,7 @@ import {Coordinate2D} from "./types";
 export class Position {
     readonly x: number;
     readonly y: number;
-    static rows = 8;
+    public static rows = 8;
 
     constructor(x: number, y: number) {
         this.x = x;
@@ -134,5 +134,3 @@ export class Position {
         return this.x === position.x && this.y === position.y;
     };
 }
-
-export default Position;

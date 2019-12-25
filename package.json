@@ -1,6 +1,6 @@
 {
   "name": "chess-fen",
-  "version": "0.1.10",
+  "version": "0.1.12",
   "private": false,
   "author": "Simon Eriksson <smnrkssn@hotmail.se>",
   "license": "MIT",
@@ -11,6 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/dv16sen/chess-fen"
   },
+  "files": ["dist/*"],
   "devDependencies": {
     "@testing-library/jest-dom": "^4.0.0",
     "@testing-library/react": "^8.0.5",
@@ -18,6 +19,7 @@
     "@types/node": "^13.1.0",
     "@types/react": "^16.9.17",
     "@types/react-dom": "^16.9.4",
+    "@types/lodash": "^4.14.149",
     "cross-env": "^5.2.0",
     "lodash": "^4.17.15",
     "node-sass": "^4.12.0",
@@ -26,9 +28,6 @@
     "react-generate-props": "^0.5.0",
     "react-scripts": "^3.0.1",
     "typescript": "^3.7.4"
-  },
-  "dependencies": {
-    "@types/lodash": "^4.14.149"
   },
   "scripts": {
     "start": "react-scripts start",
