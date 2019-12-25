@@ -1,9 +1,10 @@
 import Position from "./Position";
+import {Fen} from "./Fen";
 
 const traverse = {
-    from: (from) => ({
-        to: (to) => ({
-            searchFor: (predicate) => {
+    from: (from: number) => ({
+        to: (to: number) => ({
+            searchFor: (predicate: ((i: number, from?: number, to?: number) => boolean)|((i: number) => boolean)) => {
                 if(from < to){
                     for(let i = from + 1; i < to; i++){
                         if(predicate(i, from, to)){
@@ -24,35 +25,35 @@ const traverse = {
     })
 };
 
-const isObstructedDiagonalPath = (fromPosition, toPosition, fen) => {
+const isObstructedDiagonalPath = (fromPosition: Position, toPosition: Position, fen: Fen) => {
     return traverse
         .from(fromPosition.y)
         .to(toPosition.y)
-        .searchFor((y) => traverse
+        .searchFor((y: number) => traverse
             .from(fromPosition.x)
             .to(toPosition.x)
-            .searchFor((x) =>
+            .searchFor((x: number) =>
                 fromPosition.isDiagonalTo(new Position(x, y)) &&
                 fen.isOccupiedPlacement({x, y}))
         );
 };
 
 
-const isObstructedVerticalPath = (fromPosition, toPosition, fen) => {
+const isObstructedVerticalPath = (fromPosition: Position, toPosition: Position, fen: Fen) => {
     return traverse
         .from(fromPosition.y)
         .to(toPosition.y)
-        .searchFor((y) => fen.isOccupiedPlacement({x: fromPosition.x, y}));
+        .searchFor((y: number) => fen.isOccupiedPlacement({x: fromPosition.x, y}));
 };
 
-const isObstructedHorizontalPath = (fromPosition, toPosition, fen) => {
+const isObstructedHorizontalPath = (fromPosition: Position, toPosition: Position, fen: Fen) => {
     return traverse
         .from(fromPosition.x)
         .to(toPosition.x)
-        .searchFor((x) => fen.isOccupiedPlacement({x, y: fromPosition.y}));
+        .searchFor((x: number) => fen.isOccupiedPlacement({x, y: fromPosition.y}));
 };
 
-export const isObstructedPath = (fromPosition, toPosition, fen) => {
+export const isObstructedPath = (fromPosition: Position, toPosition: Position, fen: Fen) => {
     if(fromPosition.isDiagonalTo(toPosition)){
         return isObstructedDiagonalPath(fromPosition, toPosition, fen);
     } else if(fromPosition.isVerticalTo(toPosition)){
