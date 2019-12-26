@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
 node ./scripts/updateVersion.js
+./scripts/build.sh
 cd dist
-npm run publish
+npm publish
