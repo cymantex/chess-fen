@@ -17,16 +17,16 @@ export class Fen {
     public static readonly emptySquare = "EmptySquare";
     public static readonly outsideBoard = "OutsideBoard";
 
-    private readonly fen: string;
-    private readonly fenTokens: string[];
-    private readonly rows: number;
-    private readonly columns: number;
-    private piecePlacement: string[][];
-    private toMove: PlayerColor;
-    private castlingRights: CastlingRights;
-    private enPassantSquare: string;
-    private halfMoves: number;
-    private fullMoves: number;
+    readonly fen: string;
+    readonly fenTokens: string[];
+    readonly rows: number;
+    readonly columns: number;
+    piecePlacement: string[][];
+    toMove: PlayerColor;
+    castlingRights: CastlingRights;
+    enPassantSquare: string;
+    halfMoves: number;
+    fullMoves: number;
 
     constructor(fen: string) {
         this.fen = fen;
@@ -286,3 +286,5 @@ export class Fen {
         }
     }
 }
+
+export default Fen;

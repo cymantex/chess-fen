@@ -5,13 +5,12 @@
   "author": "Simon Eriksson <smnrkssn@hotmail.se>",
   "license": "MIT",
   "description": "",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "index.js",
+  "types": "index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dv16sen/chess-fen"
   },
-  "files": ["dist/*"],
   "devDependencies": {
     "@testing-library/jest-dom": "^4.0.0",
     "@testing-library/react": "^8.0.5",
@@ -31,7 +30,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "rm -rf dist && node updateExports.js && tsc",
+    "build": "./scripts/build.sh",
     "release": "./scripts/release.sh",
     "test": "cross-env CI=true react-scripts test --env=jsdom",
     "test:coverage": "cross-env CI=true react-scripts test --env=jsdom --coverage"

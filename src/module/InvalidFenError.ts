@@ -4,3 +4,5 @@ export class InvalidFenError extends Error {
         this.name = "InvalidFenError";
     }
 }
+
+export default InvalidFenError;
