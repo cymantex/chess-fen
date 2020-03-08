@@ -116,4 +116,10 @@ describe("Position tests", () => {
         expect(Position.fromPositionOrCoordinate("a8").equals(getPosition("a8"))).toBeTruthy();
         expect(Position.fromPositionOrCoordinate({x: 4, y: 1}).equals(getPosition("e7"))).toBeTruthy();
     });
+
+    it("Rotates position", () => {
+        expect(Position.fromCoordinate("a8").rotate()).toEqual(new Position(7, 7));
+        expect(Position.fromCoordinate("h1").rotate()).toEqual(new Position(0, 0));
+        expect(Position.fromCoordinate("e2").rotate()).toEqual(new Position(3, 1));
+    });
 });

@@ -1,5 +1,6 @@
 import {Fen} from "../module/Fen";
 import {PieceLongName} from "../module/types";
+import Position from "../module/Position";
 
 let fen = new Fen(Fen.startingPosition);
 
@@ -53,11 +54,16 @@ describe("Fen tests", () => {
 
     it("Should update position", () => {
         expect(fen.updatePosition("e1", PieceLongName.BlackBishop).toString())
-            .toBe("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQBBNR w KQkq - 0 1")
+            .toBe("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQbBNR w KQkq - 0 1")
     });
 
     it("Should clear position", () => {
         expect(fen.clearPosition("e1").toString())
             .toBe("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQ1BNR w KQkq - 0 1");
+    });
+
+    it("Should get piecePlacement", () => {
+        const newFen = new Fen(Fen.startingPosition);
+        expect(newFen.getPositionContent(Position.fromCoordinate("e2"))).toBe(PieceLongName.WhitePawn);
     });
 });

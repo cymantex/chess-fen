@@ -1,13 +1,17 @@
 import {Coordinate2D} from "./types";
 
 export class Position {
+    public static rows: number = 8;
+
     readonly x: number;
     readonly y: number;
-    public static rows: number = 8;
+
+    private rotated: boolean;
 
     constructor(x: number, y: number) {
         this.x = x;
         this.y = y;
+        this.rotated = false;
     }
 
     public static from({x, y}: Coordinate2D) {
@@ -30,6 +34,22 @@ export class Position {
     }
 
     public rotate(rotate = true): Position {
+        if (this.rotated || !rotate){
+            return this;
+        }
+
+        this.rotated = true;
+        const rotatedX = Math.abs(this.x - (Position.rows - 1));
+        const rotatedY = Math.abs(this.y - (Position.rows - 1));
+        return new Position(rotatedX, rotatedY);
+    };
+
+    public rotateGridPosition(rotate = true): Position {
+        if (this.rotated) {
+            return this;
+        }
+
+        this.rotated = rotate;
         return rotate ? new Position(-this.x, -this.y) : this;
     };
 

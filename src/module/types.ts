@@ -36,18 +36,18 @@ const {
 export const pieceLongNameToShort = (pieceName: PieceLongName | string): PieceShortName => {
     if(pieceName in PieceLongName){
         const longToShort: {[key: string]: PieceShortName} = {
-            WhitePawn: p,
-            WhiteKnight: n,
-            WhiteBishop: b,
-            WhiteRook: r,
-            WhiteQueen: q,
-            WhiteKing: k,
-            BlackPawn: P,
-            BlackKnight: N,
-            BlackBishop: B,
-            BlackRook: R,
-            BlackQueen: Q,
-            BlackKing: K
+            WhitePawn: P,
+            WhiteKnight: N,
+            WhiteBishop: B,
+            WhiteRook: R,
+            WhiteQueen: Q,
+            WhiteKing: K,
+            BlackPawn: p,
+            BlackKnight: n,
+            BlackBishop: b,
+            BlackRook: r,
+            BlackQueen: q,
+            BlackKing: k
         };
 
         return longToShort[pieceName];
@@ -58,18 +58,18 @@ export const pieceLongNameToShort = (pieceName: PieceLongName | string): PieceSh
 export const pieceShortNameToLong = (pieceName: PieceShortName | string): PieceLongName => {
     if(pieceName in PieceShortName){
         const longToShort: {[key: string]: PieceLongName} = {
-            p: WhitePawn,
-            n: WhiteKnight,
-            b: WhiteBishop,
-            r: WhiteRook,
-            q: WhiteQueen,
-            k: WhiteKing,
-            P: BlackPawn,
-            N: BlackKnight,
-            B: BlackBishop,
-            R: BlackRook,
-            Q: BlackQueen,
-            K: BlackKing
+            p: BlackPawn,
+            n: BlackKnight,
+            b: BlackBishop,
+            r: BlackRook,
+            q: BlackQueen,
+            k: BlackKing,
+            P: WhitePawn,
+            N: WhiteKnight,
+            B: WhiteBishop,
+            R: WhiteRook,
+            Q: WhiteQueen,
+            K: WhiteKing
         };
 
         return longToShort[pieceName];
@@ -79,4 +79,4 @@ export const pieceShortNameToLong = (pieceName: PieceShortName | string): PieceL
 };
 
 export type PositionOrCoordinate = string | Position;
-export type PiecePlacement = PieceLongName | "EmptySquare" | "OutsideBoard";
+export type PositionContent = PieceLongName | "EmptySquare" | "OutsideBoard";
