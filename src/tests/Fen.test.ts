@@ -1,7 +1,7 @@
 import {Fen} from "../module/Fen";
 import {PieceLongName} from "../module/types";
 
-let fen = null;
+let fen = new Fen(Fen.startingPosition);
 
 describe("Fen tests", () => {
     beforeEach(() => {
@@ -22,36 +22,37 @@ describe("Fen tests", () => {
     });
 
     it("Properly makes a specified move", () =>  {
-        expect(fen.makeMove("e2", "e4").toString())
-            .toBe("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1");
-        expect(fen.makeMove("c7", "c5").toString())
-            .toBe("rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq c6 0 2");
-        expect(fen.makeMove("g1", "f3").toString())
-            .toBe("rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2");
-        expect(fen.makeMove("c5", "c4").toString())
-            .toBe("rnbqkbnr/pp1ppppp/8/8/2p1P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 0 3");
-        expect(fen.makeMove("h1", "g1").toString())
-            .toBe("rnbqkbnr/pp1ppppp/8/8/2p1P3/5N2/PPPP1PPP/RNBQKBR1 b Qkq - 1 3");
+        let currentFen = fen.makeMove("e2", "e4");
+        expect(currentFen.toString()).toBe("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1");
+        currentFen = currentFen.makeMove("c7", "c5");
+        expect(currentFen.toString()).toBe("rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq c6 0 2");
+        currentFen = currentFen.makeMove("g1", "f3");
+        expect(currentFen.toString()).toBe("rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2");
+        currentFen = currentFen.makeMove("c5", "c4");
+        expect(currentFen.toString()).toBe("rnbqkbnr/pp1ppppp/8/8/2p1P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 0 3");
+        currentFen = currentFen.makeMove("h1", "g1");
+        expect(currentFen.toString()).toBe("rnbqkbnr/pp1ppppp/8/8/2p1P3/5N2/PPPP1PPP/RNBQKBR1 b Qkq - 1 3");
     });
 
     it("Properly updates castling rights", () => {
-        expect(fen.makeMove("h1", "h3").toString())
-            .toBe("rnbqkbnr/pppppppp/8/8/8/7R/PPPPPPPP/RNBQKBN1 b Qkq - 1 1");
-        expect(fen.makeMove("a8", "a6").toString())
-            .toBe("1nbqkbnr/pppppppp/r7/8/8/7R/PPPPPPPP/RNBQKBN1 w Qk - 2 2");
-        expect(fen.makeMove("a1", "a3").toString())
-            .toBe("1nbqkbnr/pppppppp/r7/8/8/R6R/PPPPPPPP/1NBQKBN1 b k - 3 2");
-        expect(fen.makeMove("h8", "h6").toString())
-            .toBe("1nbqkbn1/pppppppp/r6r/8/8/R6R/PPPPPPPP/1NBQKBN1 w - - 4 3");
-        const newFen = new Fen(Fen.startingPosition);
-        expect(newFen.makeMove("e1", "e3").toString())
+        let currentFen = fen.makeMove("h1", "h3");
+        expect(currentFen.toString()).toBe("rnbqkbnr/pppppppp/8/8/8/7R/PPPPPPPP/RNBQKBN1 b Qkq - 1 1");
+        currentFen = currentFen.makeMove("a8", "a6");
+        expect(currentFen.toString()).toBe("1nbqkbnr/pppppppp/r7/8/8/7R/PPPPPPPP/RNBQKBN1 w Qk - 2 2");
+        currentFen = currentFen.makeMove("a1", "a3");
+        expect(currentFen.toString()).toBe("1nbqkbnr/pppppppp/r7/8/8/R6R/PPPPPPPP/1NBQKBN1 b k - 3 2");
+        currentFen = currentFen.makeMove("h8", "h6");
+        expect(currentFen.toString()).toBe("1nbqkbn1/pppppppp/r6r/8/8/R6R/PPPPPPPP/1NBQKBN1 w - - 4 3");
+
+        let newFen = new Fen(Fen.startingPosition).makeMove("e1", "e3");
+        expect(newFen.toString())
             .toBe("rnbqkbnr/pppppppp/8/8/8/4K3/PPPPPPPP/RNBQ1BNR b kq - 1 1");
-        expect(newFen.makeMove("e8", "e6").toString())
-            .toBe("rnbq1bnr/pppppppp/4k3/8/8/4K3/PPPPPPPP/RNBQ1BNR w - - 2 2")
+        newFen = newFen.makeMove("e8", "e6");
+        expect(newFen.toString()).toBe("rnbq1bnr/pppppppp/4k3/8/8/4K3/PPPPPPPP/RNBQ1BNR w - - 2 2")
     });
 
     it("Should update position", () => {
-        expect(fen.updatePosition("e1", PieceLongName.WhiteBishop.toString()).toString())
+        expect(fen.updatePosition("e1", PieceLongName.BlackBishop).toString())
             .toBe("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQBBNR w KQkq - 0 1")
     });
 

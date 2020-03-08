@@ -3,13 +3,31 @@ import {Position} from "./Position";
 import {
     CastlingRights,
     Coordinate2D,
+    PiecePlacement,
     pieceLongNameToShort,
     PieceShortName,
     pieceShortNameToLong,
-    PlayerColor
+    PlayerColor,
+    PositionOrCoordinate
 } from "./types";
 
-export type PositionOrCoordinate = string | Position;
+export interface FenCloneArgs {
+    piecePlacement?: PiecePlacement[][];
+    toMove?: PlayerColor;
+    castlingRights?: CastlingRights;
+    enPassantSquare?: string;
+    halfMoves?: number;
+    fullMoves?: number;
+}
+
+export interface FenArgs {
+    piecePlacement: PiecePlacement[][];
+    toMove: PlayerColor;
+    castlingRights: CastlingRights;
+    enPassantSquare: string;
+    halfMoves: number;
+    fullMoves: number;
+}
 
 export class Fen {
     public static readonly startingPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
@@ -21,29 +39,56 @@ export class Fen {
     readonly fenTokens: string[];
     readonly rows: number;
     readonly columns: number;
-    piecePlacement: string[][];
-    toMove: PlayerColor;
-    castlingRights: CastlingRights;
-    enPassantSquare: string;
-    halfMoves: number;
-    fullMoves: number;
+    readonly piecePlacement: PiecePlacement[][];
+    readonly toMove: PlayerColor;
+    readonly castlingRights: CastlingRights;
+    readonly enPassantSquare: string;
+    readonly halfMoves: number;
+    readonly fullMoves: number;
 
-    constructor(fen: string) {
-        this.fen = fen;
-        this.fenTokens = fen.split(" ");
-        this.validateFen();
-        this.piecePlacement = this.parsePiecePlacement();
-        this.toMove = this.parseToMove();
-        this.castlingRights = this.parseCastlingRights();
-        this.enPassantSquare = this.parseEnPassantSquare();
-        this.halfMoves = this.parseHalfMoves();
-        this.fullMoves = this.parseFullMoves();
+    constructor(args: string | FenArgs) {
+        if(typeof args === "string") {
+            this.fen = args;
+            this.fenTokens = this.fen.split(" ");
+            this.validateFen();
+            this.piecePlacement = this.parsePiecePlacement();
+            this.toMove = this.parseToMove();
+            this.castlingRights = this.parseCastlingRights();
+            this.enPassantSquare = this.parseEnPassantSquare();
+            this.halfMoves = this.parseHalfMoves();
+            this.fullMoves = this.parseFullMoves();
+        } else {
+            this.piecePlacement = args.piecePlacement;
+            this.toMove = args.toMove;
+            this.castlingRights = args.castlingRights;
+            this.enPassantSquare = args.enPassantSquare;
+            this.halfMoves = args.halfMoves;
+            this.fullMoves = args.fullMoves;
+            this.fen = this.toString();
+            this.fenTokens = this.fen.split(" ");
+            this.validateFen();
+        }
+
         this.rows = this.piecePlacement.length;
         this.columns = this.piecePlacement[0].length;
     }
 
     public static from(fenInstance: Fen): Fen {
         return new Fen(fenInstance.toString());
+    }
+
+    public cloneWith(args?: FenCloneArgs){
+        const fenArgs: FenArgs = {
+            piecePlacement: this.piecePlacement,
+            toMove: this.toMove,
+            castlingRights: this.castlingRights,
+            enPassantSquare: this.enPassantSquare,
+            halfMoves: this.halfMoves,
+            fullMoves: this.fullMoves,
+            ...args
+        };
+
+        return new Fen(fenArgs);
     }
 
     public toString(): string {
@@ -57,35 +102,35 @@ export class Fen {
         ].join(" ");
     };
 
-    public isOccupiedPlacement({x, y}: Coordinate2D): boolean {
-        return !this.isEmptyPlacement({x, y});
+    public isOccupiedCoordinate({x, y}: Coordinate2D): boolean {
+        return !this.isEmptyCoordinate({x, y});
     };
 
-    public isEmptyPlacement({x, y}: Coordinate2D): boolean {
+    public isEmptyCoordinate({x, y}: Coordinate2D): boolean {
         return this.getPiecePlacement({x, y}) === Fen.emptySquare;
     };
 
-    public getPiecePlacement({x, y}: Coordinate2D): string {
+    public getPiecePlacement({x, y}: Coordinate2D): PiecePlacement {
         const column = this.piecePlacement[y];
         const row = column ? column[x] : null;
         return row ? row : Fen.outsideBoard;
     };
 
-    public updatePosition(positionOrCoordinate: PositionOrCoordinate, updatedPlacement: string): Fen {
+    public updatePosition(positionOrCoordinate: PositionOrCoordinate, updatedPlacement: PiecePlacement): Fen {
         const position = Position.fromPositionOrCoordinate(positionOrCoordinate);
 
-        this.piecePlacement = this.piecePlacement
-            .map((row, y) => {
-                if(y === position.y){
-                    return row.map((placement, x) => (x === position.x) ? updatedPlacement : placement);
-                }
+        return this.cloneWith({
+            piecePlacement: this.piecePlacement
+                .map((row, y) => {
+                    if(y === position.y){
+                        return row.map((placement, x) => (x === position.x) ? updatedPlacement : placement);
+                    }
 
-                return (y === position.y)
-                    ? row.map((placement, x) => (x === position.x) ? updatedPlacement : placement)
-                    : row;
-            });
-
-        return this;
+                    return (y === position.y)
+                        ? row.map((placement, x) => (x === position.x) ? updatedPlacement : placement)
+                        : row;
+                })
+        });
     };
 
     public clearPosition(positionOrCoordinate: string | Position): Fen {
@@ -99,18 +144,10 @@ export class Fen {
         const piece = this.getPiecePlacement(fromPosition);
         const target = this.getPiecePlacement(toPosition);
 
-        const mapToPositionX = (placement: string, x: number) => (x === toPosition.x) ? piece : placement;
-        const mapFromPositionX = (placement: string, x: number) => (x === fromPosition.x) ? Fen.emptySquare : placement;
+        const mapToPositionX = (placement: PiecePlacement, x: number) => (x === toPosition.x) ? piece : placement;
+        const mapFromPositionX = (placement: PiecePlacement, x: number) => (x === fromPosition.x) ? Fen.emptySquare : placement;
 
-        if(updateGameData){
-            this.castlingRights = this.getCastlingRightsAfterMove(fromPosition);
-            this.enPassantSquare = this.getEnPassantSquare({fromPosition, toPosition});
-            this.toMove = piece.startsWith("Black") ? PlayerColor.White : PlayerColor.Black;
-            this.halfMoves = (target === Fen.emptySquare && !piece.includes("Pawn")) ? this.halfMoves + 1 : 0;
-            this.fullMoves = piece.startsWith("Black") ? this.fullMoves + 1 : this.fullMoves;
-        }
-
-        this.piecePlacement = this.piecePlacement
+        const piecePlacement = this.piecePlacement
             .map((row, y) => {
                 if(y === fromPosition.y && y === toPosition.y){
                     return row
@@ -125,7 +162,17 @@ export class Fen {
                 return row;
             });
 
-        return this;
+        if(updateGameData){
+            const castlingRights = this.getCastlingRightsAfterMove(fromPosition);
+            const enPassantSquare = this.getEnPassantSquare({fromPosition, toPosition});
+            const halfMoves = (target === Fen.emptySquare && !piece.includes("Pawn")) ? this.halfMoves + 1 : 0;
+            const fullMoves = this.toMove === PlayerColor.Black ? this.fullMoves + 1 : this.fullMoves;
+            const toMove = this.toMove === PlayerColor.Black ? PlayerColor.White : PlayerColor.Black;
+
+            return this.cloneWith({castlingRights, enPassantSquare, halfMoves, fullMoves, toMove, piecePlacement});
+        }
+
+        return this.cloneWith({piecePlacement});
     };
 
     private validateFen(): void {
@@ -134,7 +181,7 @@ export class Fen {
         }
     }
 
-    private parseFenPiecePlacementChar(notation: PieceShortName|string): string|string[] {
+    private parseFenPiecePlacementChar(notation: PieceShortName|string): PiecePlacement|PiecePlacement[] {
         if(notation.match(/\d/)){
             return Array(parseInt(notation, 10)).fill(Fen.emptySquare);
         }
@@ -148,12 +195,12 @@ export class Fen {
         throw new InvalidFenError(this.fen);
     }
 
-    private parsePiecePlacement(): string[][] {
+    private parsePiecePlacement(): PiecePlacement[][] {
         return this
             .fenTokens[0]
             .split("/")
             .map(field => {
-                let pieces = [];
+                let pieces: PiecePlacement[] = [];
 
                 for(let i = 0; i < field.length; i++){
                     const prettifiedFen = this.parseFenPiecePlacementChar(field.charAt(i));

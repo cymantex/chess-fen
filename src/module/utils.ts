@@ -34,7 +34,7 @@ const isObstructedDiagonalPath = (fromPosition: Position, toPosition: Position, 
             .to(toPosition.x)
             .searchFor((x: number) =>
                 fromPosition.isDiagonalTo(new Position(x, y)) &&
-                fen.isOccupiedPlacement({x, y}))
+                fen.isOccupiedCoordinate({x, y}))
         );
 };
 
@@ -43,14 +43,14 @@ const isObstructedVerticalPath = (fromPosition: Position, toPosition: Position, 
     return traverse
         .from(fromPosition.y)
         .to(toPosition.y)
-        .searchFor((y: number) => fen.isOccupiedPlacement({x: fromPosition.x, y}));
+        .searchFor((y: number) => fen.isOccupiedCoordinate({x: fromPosition.x, y}));
 };
 
 const isObstructedHorizontalPath = (fromPosition: Position, toPosition: Position, fen: Fen) => {
     return traverse
         .from(fromPosition.x)
         .to(toPosition.x)
-        .searchFor((x: number) => fen.isOccupiedPlacement({x, y: fromPosition.y}));
+        .searchFor((x: number) => fen.isOccupiedCoordinate({x, y: fromPosition.y}));
 };
 
 export const isObstructedPath = (fromPosition: Position, toPosition: Position, fen: Fen) => {

@@ -1,3 +1,5 @@
+import {Position} from "./Position";
+
 export type Coordinate2D = {
     x: number,
     y: number
@@ -75,3 +77,6 @@ export const pieceShortNameToLong = (pieceName: PieceShortName | string): PieceL
 
     throw new Error("Unknown piece " + pieceName);
 };
+
+export type PositionOrCoordinate = string | Position;
+export type PiecePlacement = PieceLongName | "EmptySquare" | "OutsideBoard";
