@@ -1,22 +1,22 @@
 import {Position} from "./Position";
 
+export type Coordinate = string;
+export type Color = "white"|"black";
+export type Piece = "pawn"|"knight"|"bishop"|"rook"|"queen"|"king";
 export type Coordinate2D = {
     x: number,
     y: number
 }
-export enum PieceShortName {
+export enum FenPiece {
     p = "p", n = "n", b = "b", r = "r", q = "q", k = "k",
     P = "P", N = "N", B = "B", R = "R", Q = "Q", K = "K"
 }
-export enum PieceLongName {
-    WhitePawn = "WhitePawn", WhiteKnight = "WhiteKnight", WhiteBishop = "WhiteBishop", WhiteRook = "WhiteRook",
-    WhiteQueen = "WhiteQueen", WhiteKing = "WhiteKing", BlackPawn =  "BlackPawn", BlackKnight = "BlackKnight",
-    BlackBishop = "BlackBishop", BlackRook = "BlackRook", BlackQueen = "BlackQueen", BlackKing = "BlackKing"
+export enum ColoredPiece {
+    WhitePawn = "white pawn", WhiteKnight = "white knight", WhiteBishop = "white bishop", WhiteRook = "white rook",
+    WhiteQueen = "white queen", WhiteKing = "white king", BlackPawn =  "black pawn", BlackKnight = "black knight",
+    BlackBishop = "black bishop", BlackRook = "black rook", BlackQueen = "black queen", BlackKing = "black king"
 }
-export enum PlayerColor {
-    White = "White", Black = "Black"
-}
-export type CastlingRights = {
+export interface CastlingRights {
     white: {
         queenside: boolean,
         kingside: boolean
@@ -25,58 +25,48 @@ export type CastlingRights = {
         queenside: boolean,
         kingside: boolean
     }
-};
+}
 
-const {p, n, b, r, q, k, P, N, B, R, Q, K} = PieceShortName;
-const {
-    WhitePawn, WhiteKnight, WhiteBishop, WhiteRook, WhiteQueen, WhiteKing,
-    BlackPawn, BlackKnight, BlackBishop, BlackRook, BlackQueen, BlackKing
-} = PieceLongName;
+export type PositionOrCoordinate = Position | Coordinate;
+export type PositionContent = ColoredPiece | "empty";
 
-export const pieceLongNameToShort = (pieceName: PieceLongName | string): PieceShortName => {
-    if(pieceName in PieceLongName){
-        const longToShort: {[key: string]: PieceShortName} = {
-            WhitePawn: P,
-            WhiteKnight: N,
-            WhiteBishop: B,
-            WhiteRook: R,
-            WhiteQueen: Q,
-            WhiteKing: K,
-            BlackPawn: p,
-            BlackKnight: n,
-            BlackBishop: b,
-            BlackRook: r,
-            BlackQueen: q,
-            BlackKing: k
-        };
+export interface PieceData {
+    name: Piece,
+    color: Color,
+    inCheck?: boolean,
+    controlledSquares: Coordinate[],
+    moves: Coordinate[],
+    location: string
+}
 
-        return longToShort[pieceName];
+export interface SquareData {
+    coordinate: Coordinate,
+    pieceData?: PieceData,
+    controlledBy: {
+        white: boolean,
+        black: boolean
     }
+}
 
-    throw new Error("Unknown piece " + pieceName);
-};
-export const pieceShortNameToLong = (pieceName: PieceShortName | string): PieceLongName => {
-    if(pieceName in PieceShortName){
-        const longToShort: {[key: string]: PieceLongName} = {
-            p: BlackPawn,
-            n: BlackKnight,
-            b: BlackBishop,
-            r: BlackRook,
-            q: BlackQueen,
-            k: BlackKing,
-            P: WhitePawn,
-            N: WhiteKnight,
-            B: WhiteBishop,
-            R: WhiteRook,
-            Q: WhiteQueen,
-            K: WhiteKing
-        };
+export interface MoveOptions {
+    updateGameData?: boolean,
+    specialMoves?: MoveArgs[],
+    promotion?: Piece
+}
 
-        return longToShort[pieceName];
-    }
+export interface MoveArgs {
+    to: Position|Coordinate,
+    from: Position|Coordinate,
+    options?: MoveOptions
+}
 
-    throw new Error("Unknown piece " + pieceName);
-};
+export interface ControlledSquares {
+    white: Coordinate[],
+    black: Coordinate[]
+}
 
-export type PositionOrCoordinate = string | Position;
-export type PositionContent = PieceLongName | "EmptySquare" | "OutsideBoard";
+export type PositionContentEvent<T> = (color: Color|null) => T;
+export interface PositionContentEvents<T> {
+    [piece: string]: PositionContentEvent<T>,
+    empty: PositionContentEvent<T>
+}
