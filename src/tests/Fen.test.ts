@@ -3,7 +3,6 @@ import {ColoredPiece} from "../module/types";
 import {InvalidFenError} from "../module/InvalidFenError";
 
 describe("Validation", () => {
-    console.log(new Fen().move("Nf3").toString());
     it("Should throw InvalidFenError if FEN does not have 6 fields", () => {
         expect(() => new Fen(Fen.startingPosition + " foo")).toThrow(InvalidFenError);
     });
@@ -64,7 +63,6 @@ describe("Creation and serializing", () => {
 describe("Public helper functions", () => {
     it("update", () => {
         const fen = new Fen();
-        console.log(fen);
         expect(fen.update("e1", ColoredPiece.BlackBishop).toString())
             .toBe("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQbBNR w KQkq - 0 1")
     });

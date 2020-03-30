@@ -4,20 +4,50 @@ chess-fen is a library which includes tools for working with Forsyth–Edwards N
 ## Installation
 ``npm install chess-fen``
 
+## Example usage
+````javascript
+const emptyPosition = new Fen(Fen.emptyPosition);
+
+//Each update() and move() creates a new Fen instance.
+const smotheredMate = emptyPosition
+    .update("h8", ColoredPiece.BlackKing)
+    .update("h7", ColoredPiece.BlackPawn)
+    .update("g7", ColoredPiece.BlackPawn)
+    .update("e8", ColoredPiece.BlackRook)
+    .update("a8", ColoredPiece.BlackQueen)
+    .update("g5", ColoredPiece.WhiteKnight)
+    .update("c4", ColoredPiece.WhiteQueen)
+    .update("h2", ColoredPiece.WhiteKing)
+    .move("Nf7+")
+    .move("Kg8")
+    .move("Nh6+")
+    .move("Kh8")
+    .move("Qg8+!")
+    .move("Rxg8")
+    .move("Nf7#");
+
+console.log(smotheredMate.toString());
+// q5rk/5Npp/8/8/8/8/7K/8 b KQ - 1 4
+
+// The original Fen will not be mutated
+console.log(emptyPosition.toString());
+// 8/8/8/8/8/8/8/8 w KQkq - 0 1
+````
+
 ## API
 ### Constructor: Fen(fen?: string)
-The constructor takes an optional parameter which specifies the board configuration.
+The constructor takes an optional parameter which specifies the FEN board position.
 ````javascript
 const startingPosition = new Fen();
 
-//Each move() creates a new Fen instance.
-const sicilian = startingPosition.move("e4").move("c5");
-
-console.log(sicilian.toString());
-// rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq c6 0 2
-
 console.log(startingPosition.toString());
 // rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+
+console.log(new Fen("rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq c6 0 2").toString());
+// rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq c6 0 2
+
+console.log(new Fen(Fen.emptyPosition));
+// 8/8/8/8/8/8/8/8 w KQkq - 0 1
 ````
 
 ### get(Coordinate|Position)
