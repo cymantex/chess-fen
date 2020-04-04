@@ -6,12 +6,9 @@ export class Position {
     readonly x: number;
     readonly y: number;
 
-    private rotated: boolean;
-
     constructor(x: number, y: number) {
         this.x = x;
         this.y = y;
-        this.rotated = false;
     }
 
     public static from({x, y}: Coordinate2D) {
@@ -34,23 +31,13 @@ export class Position {
     }
 
     public rotate(rotate = true): Position {
-        if (this.rotated || !rotate){
+        if (!rotate){
             return this;
         }
 
-        this.rotated = true;
         const rotatedX = Math.abs(this.x - (Position.rows - 1));
         const rotatedY = Math.abs(this.y - (Position.rows - 1));
         return new Position(rotatedX, rotatedY);
-    };
-
-    public rotateGridPosition(rotate = true): Position {
-        if (this.rotated) {
-            return this;
-        }
-
-        this.rotated = rotate;
-        return rotate ? new Position(-this.x, -this.y) : this;
     };
 
     public toCoordinate(): string {

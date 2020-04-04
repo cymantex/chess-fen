@@ -46,7 +46,7 @@ console.log(startingPosition.toString());
 console.log(new Fen("rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq c6 0 2").toString());
 // rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq c6 0 2
 
-console.log(new Fen(Fen.emptyPosition));
+console.log(new Fen(Fen.emptyPosition).toString());
 // 8/8/8/8/8/8/8/8 w KQkq - 0 1
 ````
 

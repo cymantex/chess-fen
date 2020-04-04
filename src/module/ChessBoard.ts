@@ -326,3 +326,5 @@ export class ChessBoard {
         }, []);
     };
 }
+
+export default ChessBoard;

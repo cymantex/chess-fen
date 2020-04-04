@@ -80,3 +80,5 @@ export class StandardNotation {
         return move.replace(/[?=+#!]*/g, '');
     }
 }
+
+export default StandardNotation;
