@@ -1,12 +1,12 @@
 import {Color, MoveArgs, Piece, PieceData} from "./types";
 import {InvalidMoveError} from "./InvalidMoveError";
-import {blackLongCastling, blackShortCastling, fenPieceToColoredPiece, whiteLongCastling, whiteShortCastling} from "./utils";
+import {blackLongCastling, blackShortCastling, fenPieceToPositionContent, whiteLongCastling, whiteShortCastling} from "./utils";
 
 export type FindPiecesMovableTo = (to: string, piece: Piece) => PieceData[];
 
 export class StandardNotation {
     private readonly move: string;
-    private readonly piece: Piece = "pawn";
+    private readonly piece: Piece = Piece.Pawn;
     private readonly from: string = "";
     private readonly to: string = "";
     private readonly promotion?: Piece;
@@ -73,7 +73,7 @@ export class StandardNotation {
     }
 
     private static toPiece(standardNotationPieceName: string): Piece {
-        return fenPieceToColoredPiece(standardNotationPieceName).split(" ")[1] as Piece;
+        return fenPieceToPositionContent(standardNotationPieceName).split(" ")[1] as Piece;
     }
 
     private static removeSpecialCharacters(move: string) {

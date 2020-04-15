@@ -1,6 +1,7 @@
 import {Fen} from "../module/Fen";
-import {ColoredPiece} from "../module/types";
+import {Piece, BoardContent} from "../module/types";
 import {InvalidFenError} from "../module/InvalidFenError";
+import Position from "../module/Position";
 
 describe("Validation", () => {
     it("Should throw InvalidFenError if FEN does not have 6 fields", () => {
@@ -61,9 +62,12 @@ describe("Creation and serializing", () => {
 });
 
 describe("Public helper functions", () => {
+    console.log(new Fen().move({from: new Position(6, 7), to: new Position(5, 5)}).toString());
+
+
     it("update", () => {
         const fen = new Fen();
-        expect(fen.update("e1", ColoredPiece.BlackBishop).toString())
+        expect(fen.update("e1", BoardContent.BlackBishop).toString())
             .toBe("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQbBNR w KQkq - 0 1")
     });
 
@@ -75,7 +79,7 @@ describe("Public helper functions", () => {
     it("get", () => {
         const newFen = new Fen();
 
-        expect(newFen.get("e2")).toBe(ColoredPiece.WhitePawn);
+        expect(newFen.get("e2")).toBe(BoardContent.WhitePawn);
         expect(newFen.get("a0")).toBeNull();
     });
 
@@ -117,7 +121,7 @@ describe("move", () => {
             from: "e2",
             to: "e4",
             options: {
-                promotion: "queen"
+                promotion: Piece.Queen
             }
         }).toString()).toBe("rnbqkbnr/pppppppp/8/8/4Q3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1");
     });

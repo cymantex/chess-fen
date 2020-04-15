@@ -8,16 +8,18 @@ chess-fen is a library which includes tools for working with Forsyth–Edwards N
 ````javascript
 const emptyPosition = new Fen(Fen.emptyPosition);
 
+const {BlackKing, BlackPawn, BlackRook, BlackQueen, WhiteKnight, WhiteQueen, WhiteKing} = BoardContent;
+
 //Each update() and move() creates a new Fen instance.
 const smotheredMate = emptyPosition
-    .update("h8", ColoredPiece.BlackKing)
-    .update("h7", ColoredPiece.BlackPawn)
-    .update("g7", ColoredPiece.BlackPawn)
-    .update("e8", ColoredPiece.BlackRook)
-    .update("a8", ColoredPiece.BlackQueen)
-    .update("g5", ColoredPiece.WhiteKnight)
-    .update("c4", ColoredPiece.WhiteQueen)
-    .update("h2", ColoredPiece.WhiteKing)
+    .update("h8", BlackKing)
+    .update("h7", BlackPawn)
+    .update("g7", BlackPawn)
+    .update("e8", BlackRook)
+    .update("a8", BlackQueen)
+    .update("g5", WhiteKnight)
+    .update("c4", WhiteQueen)
+    .update("h2", WhiteKing)
     .move("Nf7+")
     .move("Kg8")
     .move("Nh6+")
@@ -26,12 +28,30 @@ const smotheredMate = emptyPosition
     .move("Rxg8")
     .move("Nf7#");
 
-console.log(smotheredMate.toString());
-// q5rk/5Npp/8/8/8/8/7K/8 b KQ - 1 4
+smotheredMate.printBoard();
+// -------------------
+// | q . . . . . r k |
+// | . . . . . N p p |
+// | . . . . . . . . |
+// | . . . . . . . . |
+// | . . . . . . . . |
+// | . . . . . . . . |
+// | . . . . . . . K |
+// | . . . . . . . . |
+// -------------------
 
 // The original Fen will not be mutated
-console.log(emptyPosition.toString());
-// 8/8/8/8/8/8/8/8 w KQkq - 0 1
+emptyPosition.printBoard();
+// -------------------
+// | . . . . . . . . |
+// | . . . . . . . . |
+// | . . . . . . . . |
+// | . . . . . . . . |
+// | . . . . . . . . |
+// | . . . . . . . . |
+// | . . . . . . . . |
+// | . . . . . . . . |
+// -------------------
 ````
 
 ## API
@@ -76,10 +96,10 @@ console.log(new Fen().clear("e1").toString());
 // "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQ1BNR w KQkq - 0 1"
 ````
 
-### update(Coordinate|Position, Piece|"empty")
-Replaces any the content of the specified position.
+### update(Coordinate|Position, BoardContent)
+Replaces the content of the specified position.
 ````javascript
-console.log(new Fen().update("e1", ColoredPiece.BlackBishop).toString());
+console.log(new Fen().update("e1", BoardContent.BlackBishop).toString());
 // rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQbBNR w KQkq - 0 1
 ````
 
@@ -108,6 +128,8 @@ console.log(startingPosition.isEmpty("e4"));
 ### move(StandardNotation|MoveArgs)
 Makes a move and updates FEN related properties accordingly. It will however not try to validate if the move is legal or not.
 ````javascript
+import {Position} from "chess-fen";
+
 const startingPosition = new Fen();
 
 console.log(startingPosition.move("Nf3").toString());
@@ -118,13 +140,15 @@ console.log(startingPosition.move("Ng1-f3").toString());
 
 console.log(startingPosition.move({from: "g1", to: "f3"}).toString());
 // rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq - 1 1
+
+console.log(startingPosition.move({from: new Position(6, 7), to: new Position(5, 5)}).toString());
+// rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq - 1 1
 ````
 
 ### Properties
 ````javascript
 console.log(new Fen());
 // Fen {
-//     fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
 //     toMove: 'white',
 //     castlingRights: {
 //         white: { queenside: true, kingside: true },

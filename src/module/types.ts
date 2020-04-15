@@ -2,7 +2,9 @@ import {Position} from "./Position";
 
 export type Coordinate = string;
 export type Color = "white"|"black";
-export type Piece = "pawn"|"knight"|"bishop"|"rook"|"queen"|"king";
+export enum Piece {
+    Pawn = "pawn", Knight = "knight", Bishop = "bishop", Rook = "rook", Queen = "queen", King = "king"
+}
 export type Coordinate2D = {
     x: number,
     y: number
@@ -11,10 +13,11 @@ export enum FenPiece {
     p = "p", n = "n", b = "b", r = "r", q = "q", k = "k",
     P = "P", N = "N", B = "B", R = "R", Q = "Q", K = "K"
 }
-export enum ColoredPiece {
+export enum BoardContent {
     WhitePawn = "white pawn", WhiteKnight = "white knight", WhiteBishop = "white bishop", WhiteRook = "white rook",
     WhiteQueen = "white queen", WhiteKing = "white king", BlackPawn =  "black pawn", BlackKnight = "black knight",
-    BlackBishop = "black bishop", BlackRook = "black rook", BlackQueen = "black queen", BlackKing = "black king"
+    BlackBishop = "black bishop", BlackRook = "black rook", BlackQueen = "black queen", BlackKing = "black king",
+    EmptySquare = "empty"
 }
 export interface CastlingRights {
     white: {
@@ -28,7 +31,6 @@ export interface CastlingRights {
 }
 
 export type PositionOrCoordinate = Position | Coordinate;
-export type PositionContent = ColoredPiece | "empty";
 
 export interface PieceData {
     name: Piece,

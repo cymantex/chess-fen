@@ -1,17 +1,17 @@
 import {ChessBoard} from "../module/ChessBoard";
-import {ColoredPiece, PositionContent} from "../module/types";
+import {BoardContent} from "../module/types";
 import Fen from "../module/Fen";
 import {expectEqualIgnoreOrder} from "./utils";
 
 describe("controlledSquares", () => {
-    const getControlledCoordinates = (board: PositionContent[][]) => new ChessBoard(board).controlledSquares;
+    const getControlledCoordinates = (board: BoardContent[][]) => new ChessBoard(board).controlledSquares;
 
     it("Should find squares controlled by pawns", () => {
         const fen = new Fen(Fen.emptyPosition)
-            .update("e2", ColoredPiece.WhitePawn)
-            .update("a4", ColoredPiece.WhitePawn)
-            .update("e7", ColoredPiece.BlackPawn)
-            .update("b5", ColoredPiece.BlackPawn);
+            .update("e2", BoardContent.WhitePawn)
+            .update("a4", BoardContent.WhitePawn)
+            .update("e7", BoardContent.BlackPawn)
+            .update("b5", BoardContent.BlackPawn);
 
         const controlledSquares = getControlledCoordinates(fen.board);
 
@@ -21,10 +21,10 @@ describe("controlledSquares", () => {
 
     it("Should find squares controlled by knights", () => {
         const fen = new Fen(Fen.emptyPosition)
-            .update("e2", ColoredPiece.WhiteKnight)
-            .update("c4", ColoredPiece.WhiteKnight)
-            .update("e7", ColoredPiece.BlackKnight)
-            .update("d6", ColoredPiece.BlackKnight);
+            .update("e2", BoardContent.WhiteKnight)
+            .update("c4", BoardContent.WhiteKnight)
+            .update("e7", BoardContent.BlackKnight)
+            .update("d6", BoardContent.BlackKnight);
 
         const controlledSquares = getControlledCoordinates(fen.board);
 
@@ -38,8 +38,8 @@ describe("controlledSquares", () => {
 
     it("Should find squares controlled by rooks", () => {
         const fen = new Fen(Fen.emptyPosition)
-            .update("e2", ColoredPiece.WhiteRook)
-            .update("e7", ColoredPiece.BlackRook);
+            .update("e2", BoardContent.WhiteRook)
+            .update("e7", BoardContent.BlackRook);
 
         const controlledSquares = getControlledCoordinates(fen.board);
 
@@ -53,8 +53,8 @@ describe("controlledSquares", () => {
 
     it("Should find squares controlled by bishops", () => {
         const fen = new Fen(Fen.emptyPosition)
-            .update("e2", ColoredPiece.WhiteBishop)
-            .update("g4", ColoredPiece.BlackBishop);
+            .update("e2", BoardContent.WhiteBishop)
+            .update("g4", BoardContent.BlackBishop);
 
         const controlledSquares = getControlledCoordinates(fen.board);
 
@@ -70,8 +70,8 @@ describe("controlledSquares", () => {
 
     it("Should find squares controlled by queens", () => {
         const fen = new Fen(Fen.emptyPosition)
-            .update("e2", ColoredPiece.WhiteQueen)
-            .update("e7", ColoredPiece.BlackQueen);
+            .update("e2", BoardContent.WhiteQueen)
+            .update("e7", BoardContent.BlackQueen);
 
         const controlledSquares = getControlledCoordinates(fen.board);
 
@@ -91,8 +91,8 @@ describe("controlledSquares", () => {
 
     it("Should find squares controlled by kings", () => {
         const fen = new Fen(Fen.emptyPosition)
-            .update("e2", ColoredPiece.WhiteKing)
-            .update("h8", ColoredPiece.BlackKing);
+            .update("e2", BoardContent.WhiteKing)
+            .update("h8", BoardContent.BlackKing);
 
         const controlledSquares = getControlledCoordinates(fen.board);
 
@@ -154,7 +154,7 @@ describe("map", () => {
 
         it("Should find possible moves for pawns", () => {
             const fen = new Fen(Fen.startingPosition)
-                .update("f3", ColoredPiece.BlackPawn);
+                .update("f3", BoardContent.BlackPawn);
 
             const chessBoard = new ChessBoard(fen.board);
 
@@ -164,7 +164,7 @@ describe("map", () => {
 
         it("Should find possible moves for kings", () => {
             const fen = new Fen(Fen.startingPosition)
-                .update("a8", ColoredPiece.WhiteKing);
+                .update("a8", BoardContent.WhiteKing);
 
             const chessBoard = new ChessBoard(fen.board);
 
@@ -174,7 +174,7 @@ describe("map", () => {
 
         it("Should find possible moves for knights", () => {
             const fen = new Fen(Fen.startingPosition)
-                .update("b6", ColoredPiece.BlackKnight)
+                .update("b6", BoardContent.BlackKnight)
                 .clear("d7");
 
             const chessBoard = new ChessBoard(fen.board);
@@ -187,7 +187,7 @@ describe("map", () => {
             const fen = new Fen(Fen.startingPosition)
                 .clear("e2")
                 .clear("e7")
-                .update("e4", ColoredPiece.BlackRook);
+                .update("e4", BoardContent.BlackRook);
 
             const chessBoard = new ChessBoard(fen.board);
 

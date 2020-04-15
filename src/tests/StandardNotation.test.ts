@@ -2,7 +2,7 @@ import {FindPiecesMovableTo, StandardNotation} from "../module/StandardNotation"
 import {blackLongCastling, blackShortCastling, whiteLongCastling, whiteShortCastling} from "../module/utils";
 import {ChessBoard} from "../module/ChessBoard";
 import Fen from "../module/Fen";
-import {Color, ColoredPiece} from "../module/types";
+import {Color, BoardContent} from "../module/types";
 
 const createFindPiecesMovableTo = (fen: Fen, color: Color): FindPiecesMovableTo => (to, pieceName) => {
     const chessBoard = new ChessBoard(fen.board);
@@ -57,9 +57,9 @@ describe("Regular moves", () => {
 
     it("Should allow short notation with specifier", () => {
         const fen = new Fen(Fen.startingPosition)
-            .update("f3", ColoredPiece.WhiteKnight)
+            .update("f3", BoardContent.WhiteKnight)
             .clear("d2")
-            .update("b6", ColoredPiece.BlackKnight)
+            .update("b6", BoardContent.BlackKnight)
             .clear("d7");
         const nbd2 = new StandardNotation("Nbd2", createFindPiecesMovableTo(fen, "white"));
         const nfd2 = new StandardNotation("Nfd2", createFindPiecesMovableTo(fen, "white"));
@@ -85,8 +85,8 @@ describe("Regular moves", () => {
 
     it("Should throw if notation is ambiguous", () => {
         const fen = new Fen(Fen.emptyPosition)
-            .update("a1", ColoredPiece.WhiteRook)
-            .update("c1", ColoredPiece.WhiteRook);
+            .update("a1", BoardContent.WhiteRook)
+            .update("c1", BoardContent.WhiteRook);
         const findPiecesMovableTo = createFindPiecesMovableTo(fen, "white");
 
         expect(() => new StandardNotation("Rb1", findPiecesMovableTo)).toThrow();

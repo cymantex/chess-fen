@@ -1,6 +1,6 @@
 import {Position} from "./Position";
 import {Fen} from "./Fen";
-import {FenPiece, MoveArgs, Piece, ColoredPiece, PositionContent, PositionContentEvents, Color} from "./types";
+import {FenPiece, MoveArgs, Piece, BoardContent, PositionContentEvents, Color} from "./types";
 import {InvalidFenError} from "./InvalidFenError";
 
 const traverse = {
@@ -131,9 +131,9 @@ const {p, n, b, r, q, k, P, N, B, R, Q, K} = FenPiece;
 const {
     BlackPawn, BlackKnight, BlackBishop, BlackQueen, BlackKing, BlackRook,
     WhitePawn, WhiteKnight, WhiteBishop, WhiteQueen, WhiteKing, WhiteRook
-} = ColoredPiece;
+} = BoardContent;
 
-export const coloredPieceToFenPiece = (pieceName: ColoredPiece | string): FenPiece => {
+export const positionContentToFenPiece = (pieceName: BoardContent | string): FenPiece => {
     const longToShort: {[key: string]: FenPiece} = {
         "white pawn": P,
         "white knight": N,
@@ -146,7 +146,7 @@ export const coloredPieceToFenPiece = (pieceName: ColoredPiece | string): FenPie
         "black bishop": b,
         "black rook": r,
         "black queen": q,
-        "black king": k
+        "black king": k,
     };
 
     if(longToShort[pieceName]){
@@ -156,9 +156,9 @@ export const coloredPieceToFenPiece = (pieceName: ColoredPiece | string): FenPie
     throw new Error("Unknown piece " + pieceName);
 };
 
-export const fenPieceToColoredPiece = (fenPieceName: FenPiece | string): ColoredPiece => {
+export const fenPieceToPositionContent = (fenPieceName: FenPiece | string): BoardContent => {
     if(fenPieceName in FenPiece){
-        const longToShort: {[key: string]: ColoredPiece} = {
+        const longToShort: {[key: string]: BoardContent} = {
             p: BlackPawn,
             n: BlackKnight,
             b: BlackBishop,
@@ -179,15 +179,15 @@ export const fenPieceToColoredPiece = (fenPieceName: FenPiece | string): Colored
     throw new InvalidFenError("Unknown piece " + fenPieceName);
 };
 
-export const toColoredPiece = (color: Color, piece: Piece): ColoredPiece => {
-    return `${color} ${piece}` as ColoredPiece;
+export const toColoredPiece = (color: Color, piece: Piece): BoardContent => {
+    return `${color} ${piece}` as BoardContent;
 };
 
-export const toPiece = (pieces: ColoredPiece|PositionContent): Piece => {
+export const toPiece = (pieces: BoardContent|BoardContent): Piece => {
     return pieces.split(" ")[1] as Piece
 };
 
-export function positionContentEvent<T>(positionContent: PositionContent,
+export function positionContentEvent<T>(positionContent: BoardContent,
                                         positionContentEvents: PositionContentEvents<T>): T {
     if(positionContent === "empty"){
         return positionContentEvents.empty(null);

@@ -1,4 +1,4 @@
-import {Color, ControlledSquares, PieceData, PositionContent, SquareData} from "./types";
+import {Color, ControlledSquares, PieceData, BoardContent, SquareData} from "./types";
 import Position from "./Position";
 import {positionContentEvent, toPiece} from "./utils";
 
@@ -9,9 +9,9 @@ export class ChessBoard {
     private currentPosition: Position;
     private currentColor: Color;
     private opponentColor: Color;
-    private readonly board: PositionContent[][];
+    private readonly board: BoardContent[][];
 
-    constructor(board: PositionContent[][]) {
+    constructor(board: BoardContent[][]) {
         this.currentColor = "white";
         this.opponentColor = "black";
         this.currentPosition = new Position(0, 0);
@@ -66,7 +66,7 @@ export class ChessBoard {
         return pieceData;
     }
 
-    private traversePositions = (onPosition: (positionContent: PositionContent) => any) => {
+    private traversePositions = (onPosition: (positionContent: BoardContent) => any) => {
         this.board.forEach((boardRow, y) => {
             boardRow.forEach((positionContent, x) => {
                 this.currentPosition = new Position(x, y);
