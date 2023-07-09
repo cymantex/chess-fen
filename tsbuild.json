@@ -10,7 +10,5 @@
     "downlevelIteration": true,
     "jsx": "react"
   },
-  "include": [
-    "src/module"
-  ]
+  "include": ["src/module"]
 }

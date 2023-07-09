@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-if output=$(node ./scripts/updateVersion.js); then
-    if output=$(./scripts/build.sh); then
-        cd dist
+if node ./scripts/updateVersion.js; then
+    if ./scripts/build.sh; then
+        cd dist || exit
         npm publish
     fi
 fi

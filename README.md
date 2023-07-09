@@ -8,33 +8,24 @@ chess-fen is a library which includes tools for working with Forsyth–Edwards N
 ````javascript
 const emptyPosition = new Fen(Fen.emptyPosition);
 
-const {BlackKing, BlackPawn, BlackRook, BlackQueen, WhiteKnight, WhiteQueen, WhiteKing} = BoardContent;
-
-//Each update() and move() creates a new Fen instance.
-const smotheredMate = emptyPosition
-    .update("h8", BlackKing)
-    .update("h7", BlackPawn)
-    .update("g7", BlackPawn)
-    .update("e8", BlackRook)
-    .update("a8", BlackQueen)
-    .update("g5", WhiteKnight)
-    .update("c4", WhiteQueen)
-    .update("h2", WhiteKing)
-    .move("Nf7+")
-    .move("Kg8")
-    .move("Nh6+")
-    .move("Kh8")
-    .move("Qg8+!")
-    .move("Rxg8")
-    .move("Nf7#");
+//Each update() creates a new Fen instance.
+const smotheredMate = new Fen(Fen.emptyPosition)
+  .update("h8", PIECES.b)
+  .update("h7", PIECES.p)
+  .update("g7", PIECES.p)
+  .update("e8", PIECES.r)
+  .update("a8", PIECES.q)
+  .update("g5", PIECES.N)
+  .update("c4", PIECES.Q)
+  .update("h2", PIECES.K);
 
 smotheredMate.printBoard();
 // -------------------
-// | q . . . . . r k |
-// | . . . . . N p p |
+// | q . . . r . . b |
+// | . . . . . . p p |
 // | . . . . . . . . |
-// | . . . . . . . . |
-// | . . . . . . . . |
+// | . . . . . . N . |
+// | . . Q . . . . . |
 // | . . . . . . . . |
 // | . . . . . . . K |
 // | . . . . . . . . |
@@ -55,7 +46,7 @@ emptyPosition.printBoard();
 ````
 
 ## API
-### Constructor: Fen(fen?: string)
+### Constructor: Fen(fenOrArgs?: string | FenArgs)
 The constructor takes an optional parameter which specifies the FEN board position.
 ````javascript
 const startingPosition = new Fen();
@@ -125,104 +116,30 @@ console.log(startingPosition.isEmpty("e4"));
 // true
 ````
 
-### move(StandardNotation|MoveArgs)
-Makes a move and updates FEN related properties accordingly. It will however not try to validate if the move is legal or not.
-````javascript
-import {Position} from "chess-fen";
-
-const startingPosition = new Fen();
-
-console.log(startingPosition.move("Nf3").toString());
-// rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq - 1 1
-
-console.log(startingPosition.move("Ng1-f3").toString());
-// rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq - 1 1
-
-console.log(startingPosition.move({from: "g1", to: "f3"}).toString());
-// rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq - 1 1
-
-console.log(startingPosition.move({from: new Position(6, 7), to: new Position(5, 5)}).toString());
-// rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq - 1 1
-````
-
 ### Properties
 ````javascript
-console.log(new Fen());
+console.log(new Fen(Fen.startingPosition));
 // Fen {
-//     toMove: 'white',
-//     castlingRights: {
-//         white: { queenside: true, kingside: true },
-//         black: { queenside: true, kingside: true }
-//     },
-//     enPassantSquare: '-',
-//     halfMoves: 0,
-//     fullMoves: 1
-//     board: [
-//         [
-//             'black rook',
-//             'black knight',
-//             'black bishop',
-//             'black queen',
-//             'black king',
-//             'black bishop',
-//             'black knight',
-//             'black rook'
-//         ],
-//         [
-//             'black pawn',
-//             'black pawn',
-//             'black pawn',
-//             'black pawn',
-//             'black pawn',
-//             'black pawn',
-//             'black pawn',
-//             'black pawn'
-//         ],
-//         [
-//             'empty', 'empty',
-//             'empty', 'empty',
-//             'empty', 'empty',
-//             'empty', 'empty'
-//         ],
-//         [
-//             'empty', 'empty',
-//             'empty', 'empty',
-//             'empty', 'empty',
-//             'empty', 'empty'
-//         ],
-//         [
-//             'empty', 'empty',
-//             'empty', 'empty',
-//             'empty', 'empty',
-//             'empty', 'empty'
-//         ],
-//         [
-//             'empty', 'empty',
-//             'empty', 'empty',
-//             'empty', 'empty',
-//             'empty', 'empty'
-//         ],
-//         [
-//             'white pawn',
-//             'white pawn',
-//             'white pawn',
-//             'white pawn',
-//             'white pawn',
-//             'white pawn',
-//             'white pawn',
-//             'white pawn'
-//         ],
-//         [
-//             'white rook',
-//             'white knight',
-//             'white bishop',
-//             'white queen',
-//             'white king',
-//             'white bishop',
-//             'white knight',
-//             'white rook'
-//         ]
-//     ]
+//   rows: 8,
+//   columns: 8,
+//   board: [
+//     ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'],
+//     ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
+//     [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+//     [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+//     [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+//     [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+//     ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
+//     ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R']
+//   ],
+//   toMove: 'white',
+//   castlingRights: {
+//     white: { queenside: true, kingside: true },
+//     black: { queenside: true, kingside: true }
+//   },
+//   enPassantSquare: '-',
+//   halfMoves: 0,
+//   fullMoves: 1
 // }
 ````
 

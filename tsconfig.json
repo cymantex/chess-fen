@@ -2,28 +2,31 @@
   "compilerOptions": {
     "target": "es5",
     "module": "esnext",
-    "lib": [
-      "es2017",
-      "es7",
-      "es6",
-      "dom"
-    ],
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "declaration": true,
     "outDir": "dist",
-    "strict": true,
-    "esModuleInterop": true,
-    "jsx": "preserve",
-    "allowJs": true,
+    "downlevelIteration": true,
     "skipLibCheck": true,
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node",
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "downlevelIteration": true,
-    "noEmit": true
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
+
+    /* Linting */
+    "allowJs": false,
+    "strict": true,
+    "alwaysStrict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "useDefineForClassFields": true
   },
-  "include": [
-    "src/module"
-  ]
+  "include": ["src/module"]
 }
