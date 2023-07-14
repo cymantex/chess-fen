@@ -1,17 +1,3 @@
-function fixProto(target: Error, prototype: {}) {
-  const setPrototypeOf: Function = Object.setPrototypeOf;
-  setPrototypeOf
-    ? setPrototypeOf(target, prototype)
-    : // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ((target as any).__proto__ = prototype);
-}
-
-function fixStack(target: Error, fn: Function = target.constructor) {
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  const captureStackTrace: Function = Error.captureStackTrace;
-  captureStackTrace && captureStackTrace(target, fn);
-}
-
 export class InvalidFenError extends Error {
   constructor(message: string) {
     super(message);
@@ -49,4 +35,18 @@ export class InvalidFenError extends Error {
   static invalidToMove() {
     return new InvalidFenError("The side to move must be either w or b");
   }
+}
+
+function fixProto(target: Error, prototype: {}) {
+  const setPrototypeOf: Function = Object.setPrototypeOf;
+  setPrototypeOf
+    ? setPrototypeOf(target, prototype)
+    : // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ((target as any).__proto__ = prototype);
+}
+
+function fixStack(target: Error, fn: Function = target.constructor) {
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  const captureStackTrace: Function = Error.captureStackTrace;
+  captureStackTrace && captureStackTrace(target, fn);
 }

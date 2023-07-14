@@ -1,0 +1,9 @@
+scripts
+src
+.eslintrc.cjs
+.prettierrc.cjs
+.prettierrc.json
+.jest.config.js
+package-lock.json
+tsbuild.json
+tsconfig.json

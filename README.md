@@ -1,16 +1,30 @@
 # chess-fen
-chess-fen is a library which includes tools for working with Forsyth–Edwards Notation (FEN) in an immutable manner.
+
+chess-fen is a library which includes tools for working with Forsyth–Edwards Notation (FEN) in an
+immutable manner.
 
 ## Installation
-``npm install chess-fen``
+
+`npm install chess-fen`
+
+## Version 1.0.0+
+
+Since 1.0.0 chess-fen is no longer also a standard notation parser and instead focuses on being a
+simple data structure with basic primitives for working with FEN notation. This means the previous
+`Fen.move()` method has been removed along with associated classes, types and functions for working
+with parsing chess moves.
+
+There have also been some significant changes to the types (
+https://github.com/cymantex/chess-fen/blob/master/src/module/types.ts).
 
 ## Example usage
+
 ````javascript
 const emptyPosition = new Fen(Fen.emptyPosition);
 
 //Each update() creates a new Fen instance.
-const smotheredMate = new Fen(Fen.emptyPosition)
-  .update("h8", PIECES.b)
+const smotheredMate = emptyPosition
+  .update("h8", PIECES.k)
   .update("h7", PIECES.p)
   .update("g7", PIECES.p)
   .update("e8", PIECES.r)
@@ -21,7 +35,7 @@ const smotheredMate = new Fen(Fen.emptyPosition)
 
 smotheredMate.printBoard();
 // -------------------
-// | q . . . r . . b |
+// | q . . . r . . k |
 // | . . . . . . p p |
 // | . . . . . . . . |
 // | . . . . . . N . |
@@ -46,8 +60,11 @@ emptyPosition.printBoard();
 ````
 
 ## API
+
 ### Constructor: Fen(fenOrArgs?: string | FenArgs)
+
 The constructor takes an optional parameter which specifies the FEN board position.
+
 ````javascript
 const startingPosition = new Fen();
 
@@ -62,12 +79,14 @@ console.log(new Fen(Fen.emptyPosition).toString());
 ````
 
 ### get(Coordinate|Position)
+
 Gets the content of the specified position.
+
 ````javascript
 const startingPosition = new Fen();
 
 console.log(startingPosition.get("e1"));
-// white king
+// K
 
 console.log(startingPosition.get("e4"));
 // empty
@@ -81,20 +100,25 @@ console.log(startingPosition.get(new Position(4, 7)));
 ````
 
 ### clear(Coordinate|Position)
+
 Removes the content on the specified position if there is any.
+
 ````javascript
 console.log(new Fen().clear("e1").toString());
 // "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQ1BNR w KQkq - 0 1"
 ````
 
 ### update(Coordinate|Position, BoardContent)
+
 Replaces the content of the specified position.
+
 ````javascript
 console.log(new Fen().update("e1", BoardContent.BlackBishop).toString());
 // rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQbBNR w KQkq - 0 1
 ````
 
 ### isOccupied(Coordinate|Position)
+
 ````javascript
 const startingPosition = new Fen();
 
@@ -106,6 +130,7 @@ console.log(startingPosition.isOccupied("e4"));
 ````
 
 ### isEmpty(Coordinate|Position)
+
 ````javascript
 const startingPosition = new Fen();
 
@@ -117,6 +142,7 @@ console.log(startingPosition.isEmpty("e4"));
 ````
 
 ### Properties
+
 ````javascript
 console.log(new Fen(Fen.startingPosition));
 // Fen {
