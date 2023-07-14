@@ -3,7 +3,9 @@ src
 .eslintrc.cjs
 .prettierrc.cjs
 .prettierrc.json
-.jest.config.js
+.prettierignore
+jest.config.js
 package-lock.json
 tsbuild.json
 tsconfig.json
+.idea
