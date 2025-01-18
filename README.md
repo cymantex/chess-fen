@@ -7,16 +7,6 @@ immutable manner.
 
 `npm install chess-fen`
 
-## Version 1.0.0+
-
-Since 1.0.0 chess-fen is no longer a standard notation parser and instead focuses on being a
-simple data structure with basic primitives for working with FEN notation. This means the previous
-`Fen.move()` method has been removed along with associated classes, types and functions for working
-with parsing chess moves.
-
-There have also been some significant changes to the types (
-https://github.com/cymantex/chess-fen/blob/master/src/module/types.ts).
-
 ## Example usage
 
 ````javascript
